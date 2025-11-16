@@ -5,7 +5,6 @@ INF = sys.maxsize
 def floyd_warshall(graph):
     
     V = len(graph)
-    # Inicializa la matriz de distancias y predecesores
     dist = [list(row) for row in graph]
     pred = [[None] * V for _ in range(V)]
     for i in range(V):
@@ -13,16 +12,13 @@ def floyd_warshall(graph):
             if graph[i][j] != 0 and graph[i][j] != INF:
                 pred[i][j] = i
 
-    # Bucle principal del algoritmo
-    for k in range(V): # Vértice intermedio
-        for i in range(V): # Vértice de origen
-            for j in range(V): # Vértice de destino
-                # Si pasar por k es más corto que la ruta actual
+    for k in range(V):
+        for i in range(V):
+            for j in range(V):
                 if dist[i][k] != INF and dist[k][j] != INF and dist[i][k] + dist[k][j] < dist[i][j]:
                     dist[i][j] = dist[i][k] + dist[k][j]
-                    pred[i][j] = pred[k][j] # Actualiza el predecesor
+                    pred[i][j] = pred[k][j]
 
-    # Verifica si existen ciclos negativos
     for i in range(V):
         if dist[i][i] < 0:
             raise ValueError("El grafo contiene un ciclo de peso negativo.")
@@ -30,7 +26,6 @@ def floyd_warshall(graph):
     return dist, pred
 
 def print_solution(dist, pred, V):
-    """Función para imprimir la matriz de distancias y las rutas."""
     print("Matriz de distancias más cortas:")
     for i in range(V):
         for j in range(V):
@@ -54,3 +49,4 @@ graph_example = [
 num_vertices = len(graph_example)
 dist_matrix, pred_matrix = floyd_warshall(graph_example)
 print_solution(dist_matrix, pred_matrix, num_vertices)
+
